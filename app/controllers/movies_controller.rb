@@ -1,13 +1,26 @@
 class MoviesController < ApplicationController
-
+  def movie_params
+   params.require(:movie).permit(:title, :rating, :description, :release_date, :timestamps)
+  end
+    
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
-
-  def index
-    @movies = Movie.all
+/*Added variables to connect checking a box to displaying the movie list by rating March 8*/
+   def index
+    @all_ratings = Movie.order(:rating).select(:rating).map(&:rating).uniq
+    @checked_ratings = check
+    @checked_ratings.each do |rating|
+      params[rating] = true
+    end
+/*Control statements to connect sorted params to movies variable March 9*/
+    if params[:sort]
+      @movies = Movie.order(params[:sort])
+    else
+      @movies = Movie.where(:rating => @checked_ratings)
+    end
   end
 
   def new
@@ -38,8 +51,16 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
-      def movie_params
-        params.require(:movie).permit(:title, :rating, :description, :release_date, :timestamps)
-    end
+/*A method to connect clicking a checkbox with the ratings hash table March 8 2018 */
+  private
 
+  def check
+    if params[:ratings]
+      params[:ratings].keys
+    else
+      @all_ratings
+    end
+  end
 end
+
+
