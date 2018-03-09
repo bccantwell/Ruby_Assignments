@@ -1,17 +1,19 @@
 -#  This file is app/views/movies/index.html.haml
+
+-#Altered ratings form to reflect checkboxes being checked March 9 2018
 %h1 All Movies
-/*Altered ratings form to reflect checkboxes being checked March 9 2018 */
+
 = form_tag movies_path, :method => :get, :id => 'ratings_form' do
   Include:
   - @all_ratings.each do |rating|
     = rating
     = check_box_tag "ratings[#{rating}]", 1, params[:"#{rating}"]
   = submit_tag 'Refresh', :id => 'ratings_submit'
-  
+
+-#Added links to sort columns and hilight them March 6 2018
 %table#movies
   %thead
     %tr
-    /*Added links to order and hilight columns March 3 2018 */
       %th{:class => ("hilite" if params[:sort] == "title")}= link_to 'Movie Title', movies_path(:sort => 'title'), :id => 'title_header'
       %th Rating
       %th{:class => ("hilite" if params[:sort] == "release_date")}= link_to 'Release Date', movies_path(:sort => 'release_date'), :id => 'release_date_header'

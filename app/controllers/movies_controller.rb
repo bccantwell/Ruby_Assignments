@@ -8,14 +8,14 @@ class MoviesController < ApplicationController
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
-/*Added variables to connect checking a box to displaying the movie list by rating March 8*/
+#Added variables to connect checking a box to displaying the movie list by rating March 8
    def index
     @all_ratings = Movie.order(:rating).select(:rating).map(&:rating).uniq
     @checked_ratings = check
     @checked_ratings.each do |rating|
       params[rating] = true
     end
-/*Control statements to connect sorted params to movies variable March 9*/
+#Control statements to connect sorted params to movies variable- March 9
     if params[:sort]
       @movies = Movie.order(params[:sort])
     else
@@ -51,7 +51,7 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
-/*A method to connect clicking a checkbox with the ratings hash table March 8 2018 */
+#A method to connect clicking a checkbox with the ratings hash table March 8 2018
   private
 
   def check
